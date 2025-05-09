@@ -1,0 +1,23 @@
+{
+  "name": "alivygidnodiscountbot",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "petro <js@js.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "crypto-js": "^4.2.0",
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
