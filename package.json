@@ -5,12 +5,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "index.js",
+    "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "petro <js@js.com>",
+  "author": " Alex Kashyrin <kashirin.alexsandr91@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.1.10"
@@ -19,6 +19,7 @@
     "aliexpress-api": "^1.2.3",
     "axios": "^1.9.0",
     "crypto-js": "^4.2.0",
+    "dotenv": "^16.5.0",
     "node-telegram-bot-api": "^0.66.0",
     "playwright": "^1.52.0",
     "puppeteer": "^24.8.2"
