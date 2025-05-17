@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import puppeteer from "puppeteer";
 import axios from "axios";
 
 /**
@@ -39,7 +40,7 @@ export function cleanAliUrlFromAff(url) {
 export function getAliExpressPromoLinks(url) {
   const baseUrl = new URL(url);
   baseUrl.search = ""; // очищаємо всі параметри
-
+  console.log("baseUrl", baseUrl.toString());
   const channelsParams = [
     { sourceType: "620", channel: "coin" },
     { sourceType: "562", channel: "coin" },
@@ -102,31 +103,65 @@ export function getAliExpressLinkType(url) {
   return "unknown";
 }
 
-export function getSuccessMessage(promoLinks) {
-  const template = [
-    { label: "З монетними знижками", emoji: "🪙" },
-    { label: 'З купоном "Земля призів"', emoji: "🌱" },
-    { label: "З суперзнижкою", emoji: "🔥" },
-    { label: "Big save (велика економія)", emoji: "💯" },
-    { label: "Пропозиція для комплектів", emoji: "🛍" },
-  ];
-  console.log("promoLinks", promoLinks);
-  const arr = template.map((obj, index) => {
-    return { ...obj, ...promoLinks[index] };
-  });
+export function getSuccessMessage(promotionLinks) {
+  const dataByType = {
+    620: { label: "З монетними знижками", emoji: "💰", order: 1 },
+    561: { label: "З суперзнижкою", emoji: "🔥", order: 2 },
+    680: { label: "Big save (велика економія)", emoji: "💯", order: 3 },
+    562: { label: 'З купоном "Земля призів"', emoji: "🌱", order: 4 },
+    591: { label: "Пропозиція для комплектів", emoji: "🛍", order: 5 },
+  };
 
-  return arr
+  return promotionLinks
+    .map(({ promotion_link, source_value }) => {
+      const sourceType = defineSourceTypeParamFromFullLink(source_value);
+      const typeData = dataByType[sourceType];
+
+      if (!typeData) return null;
+
+      return {
+        ...typeData,
+        promotion_link,
+      };
+    })
+    .filter(Boolean) // видаляємо null якщо sourceType не знайдено
+    .sort((a, b) => a.order - b.order)
     .map(
-      ({ promotion_link, emoji, label }) =>
+      ({ emoji, label, promotion_link }) =>
         `${emoji} <a href="${promotion_link}">${label}</a>`
     )
     .join("\n\n");
 }
 
 export async function getOriginalUrlFromShort(url) {
-  const data = await axios.get(url);
-  return data?.request?.res?.responseUrl;
+  const res = await axios.get(url, { maxRedirects: 5 });
+  const responseUrl = res?.request?.res?.responseUrl;
+  const urlCopy = new URL(responseUrl);
+
+  if (urlCopy.origin === "https://star.aliexpress.com") {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    await page.goto(url, { waitUntil: "networkidle2" });
+    const finalUrl = page.url();
+    await browser.close();
+    console.log("https://star.aliexpress.com");
+    return finalUrl;
+  }
+  console.log("NO");
+  return responseUrl;
 }
+
+function defineSourceTypeParamFromFullLink(fullLink) {
+  const urlCopy = new URL(fullLink); // створюємо копію базового URL
+  const sourceType = urlCopy.searchParams.get("sourceType");
+  return sourceType;
+}
+
+console.log(
+  defineSourceTypeParamFromFullLink(
+    "https://www.aliexpress.com/item/1005007550235757.html?sourceType=561&channel=coin"
+  )
+);
 
 console.log(await getOriginalUrlFromShort("https://a.aliexpress.com/_EuARbgK"));
 // Приклади
@@ -140,37 +175,3 @@ console.log(
   )
 ); // 'standard'
 console.log(getAliExpressLinkType("https://example.com")); // 'unknown'
-
-// /**
-//  * Генерація підпису для Open Platform AliExpress API
-//  * @param {Object} params - об'єкт з параметрами запиту (без sign)
-//  * @param {string} appSecret - твій App Secret
-//  * @returns {string} - підпис (sign)
-//  */
-// export function generateAliSign(params, appSecret) {
-//   const sortedKeys = Object.keys(params).sort(); // ASCII sort
-
-//   let signStr = "";
-//   for (const key of sortedKeys) {
-//     const value = params[key];
-//     if (key && value !== undefined && value !== "") {
-//       signStr += key + value;
-//     }
-//   }
-
-//   const fullStr = appSecret + signStr + appSecret;
-
-//   const hmac = crypto.createHmac("sha256", appSecret);
-//   hmac.update(fullStr, "utf8");
-//   return hmac.digest("hex").toUpperCase(); // Обовʼязково верхнім регістром
-// }
-
-// const stringForTest =
-//   "Я щойно знайшов це на AliExpress: грн.1,608.50 | Зарядний пристрій Vention 20 Вт GaN PD3.0 Швидка зарядка для iPhone 16 15 14 13 Pro Max iPad Samsung USB Type C Зарядний пристрій з кабелем C до Lhttps://a.aliexpress.com/_EuARbgK";
-// const stringForTest2 =
-//   "Я щойно знайшов це на AliExpress:грн.1,836.83 | FNIRSI HS-01 Паяльник з регульованою температурою DC 24V 80-420 ℃   Зварювальна паяльна станція PD 65W Портативний інструмент для ремонтуhttps://www.aliexpress.com/item/1005008924982938.html?sourceType=620&channel=coin&aff_fcid=965ea0a8ebd6439f89c7813c9b397c57-1747050339875-03933-_oC0Rfen&aff_fsk=_oC0Rfen&aff_platform=api-new-link-generate&sk=_oC0Rfen&aff_trace_key=965ea0a8ebd6439f89c7813c9b397c57-1747050339875-03933-_oC0Rfen&terminal_id=d92e85522c7c4448ac452b492dad038d&gatewayAdapt=vnm2glo ";
-// console.log(extractUrl(stringForTest2));
-// console.log(
-//   "getAliExpressPromoLinks: ",
-//   getAliExpressPromoLinks(extractUrl(stringForTest2))
-// );

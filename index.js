@@ -36,8 +36,18 @@ bot.setMyCommands([
 
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
-  const text = msg.text;
+  // const text = msg.text;
+
+  const text = msg.text || msg.caption;
   console.log("text: ", text);
+
+  if (!text) {
+    bot.sendMessage(
+      msg.chat.id,
+      "📩 Надішліть, будь ласка, посилання на товар з AliExpress у вигляді тексту."
+    );
+    return;
+  }
 
   const HTMLOptions = {
     parse_mode: "HTML",
@@ -79,16 +89,14 @@ bot.on("message", async (msg) => {
         bot.sendMessage(chatId, getSuccessMessage(affiliateLinks), HTMLOptions);
       } else if (typeUrl === "short") {
         const originalUrlProduct = await getOriginalUrlFromShort(url);
-        const linksWithTypeChennal =
+        const linksWithTypeChannal =
           getAliExpressPromoLinks(originalUrlProduct);
         const data = await aliexpressApiService.getAffiliateLinks(
-          linksWithTypeChennal
+          linksWithTypeChannal
         );
-
         const affiliateLinks =
           data.aliexpress_affiliate_link_generate_response.resp_result.result
             .promotion_links.promotion_link;
-
         bot.sendMessage(chatId, getSuccessMessage(affiliateLinks), HTMLOptions);
       }
     }
