@@ -28,6 +28,6 @@ export function getSuccessMessage(promotionLinks) {
         `${emoji} <a href="${promotion_link}">${label}</a>`
     )
     .join("\n\n");
-
+  console.log("!!!!!!promoText", promoText);
   return promoText;
 }

@@ -27,7 +27,41 @@ export function cleanAliUrlFromAff(url) {
 }
 
 export function defineSourceTypeParamFromFullLink(fullLink) {
-  const urlCopy = new URL(fullLink); // створюємо копію базового URL
-  const sourceType = urlCopy.searchParams.get("sourceType");
+  const url = new URL(fullLink);
+
+  // Перевіряємо, чи це редірект на star.aliexpress.com
+  const redirectParam = url.searchParams.get("redirectUrl");
+
+  let targetUrl = fullLink;
+
+  if (redirectParam) {
+    // Якщо є redirectUrl — працюємо з ним
+    targetUrl = redirectParam;
+  }
+
+  // Тепер парсимо справжній URL, щоб витягнути параметри
+  const parsedTargetUrl = new URL(targetUrl);
+  const sourceType = parsedTargetUrl.searchParams.get("sourceType");
   return sourceType;
+}
+
+export function toMobileAliExpressLink(desktopUrl) {
+  try {
+    const url = new URL(desktopUrl);
+
+    // Проверка, что это ссылка на товар
+    if (
+      !url.hostname.includes("aliexpress.com") ||
+      !url.pathname.startsWith("/item/")
+    ) {
+      throw new Error("Это не ссылка на товар AliExpress");
+    }
+
+    // Меняем поддомен на мобильный
+    url.hostname = "m.aliexpress.com";
+
+    return url.toString();
+  } catch (error) {
+    return `Ошибка: ${error.message}`;
+  }
 }

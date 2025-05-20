@@ -5,7 +5,6 @@ import {
   getAliExpressLinkType,
   extractUrl,
 } from "../utils/index.js";
-
 import aliexpressApiService from "../services/aliAPI.js";
 
 export const handleMessage = async (msg, bot) => {
@@ -64,17 +63,23 @@ export const handleMessage = async (msg, bot) => {
     }
   }
 
+  console.log("!!!  productUrl  !!!", productUrl);
+
   try {
     const linksWithTypeChennal = getAliExpressPromoLinks(productUrl);
     const data = await aliexpressApiService.getAffiliateLinks(
       linksWithTypeChennal
     );
-
+    console.log("data", data);
     const affiliateLinks =
       data.aliexpress_affiliate_link_generate_response.resp_result.result
         .promotion_links.promotion_link;
+    console.log("affiliateLinks: ", affiliateLinks);
 
-    return bot.sendMessage(chatId, getSuccessMessage(affiliateLinks), {
+    const answer = getSuccessMessage(affiliateLinks);
+    console.log("answer: ", answer);
+
+    return bot.sendMessage(chatId, answer, {
       ...HTMLOptions,
       reply_markup: {
         inline_keyboard: [
@@ -86,7 +91,7 @@ export const handleMessage = async (msg, bot) => {
           ],
           [
             {
-              text: "💬 Написати для отримання допомоги або пропозицій",
+              text: "💬 Питання та пропозицій",
               url: "https://t.me/ali_vygidno",
             },
           ],

@@ -1,3 +1,9 @@
+import {
+  startMessage,
+  messageForHelp,
+  messageForInfo,
+} from "../messages/templateMessages.js";
+
 export const handleCommand = (text, chatId, bot, HTMLOptions) => {
   if (text === "/start") {
     return bot.sendMessage(chatId, startMessage, HTMLOptions);
