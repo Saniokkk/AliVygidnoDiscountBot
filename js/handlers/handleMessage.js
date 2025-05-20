@@ -4,6 +4,7 @@ import {
   getSuccessMessage,
   getAliExpressLinkType,
   extractUrl,
+  wrapWithRedirectLink,
 } from "../utils/index.js";
 import aliexpressApiService from "../services/aliAPI.js";
 
@@ -63,14 +64,22 @@ export const handleMessage = async (msg, bot) => {
     }
   }
 
-  console.log("!!!  productUrl  !!!", productUrl);
-
   try {
     const linksWithTypeChennal = getAliExpressPromoLinks(productUrl);
-    const data = await aliexpressApiService.getAffiliateLinks(
+    let data = await aliexpressApiService.getAffiliateLinks(
       linksWithTypeChennal
     );
-    console.log("data", data);
+
+    const successResult =
+      data?.aliexpress_affiliate_link_generate_response.resp_result?.result
+        ?.promotion_links?.promotion_link[0]?.promotion_link;
+
+    console.log("successResult", successResult);
+    if (!successResult) {
+      const linksWithRedirect = linksWithTypeChennal.map(wrapWithRedirectLink);
+      data = await aliexpressApiService.getAffiliateLinks(linksWithRedirect);
+    }
+
     const affiliateLinks =
       data.aliexpress_affiliate_link_generate_response.resp_result.result
         .promotion_links.promotion_link;

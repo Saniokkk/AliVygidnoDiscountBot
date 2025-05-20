@@ -29,5 +29,5 @@ export function getSuccessMessage(promotionLinks) {
     )
     .join("\n\n");
   console.log("!!!!!!promoText", promoText);
-  return promoText;
+  return "\n\n" + "Ваш товар в розділах" + "\n\n" + promoText + "\n\n";
 }

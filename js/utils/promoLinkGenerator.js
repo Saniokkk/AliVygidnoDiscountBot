@@ -10,22 +10,27 @@ export function getAliExpressPromoLinks(url) {
     {
       sourceType: "620",
       channel: "coin",
+      afSmartRedirect: "y",
     },
     {
       sourceType: "562",
       channel: "coin",
+      afSmartRedirect: "y",
     },
     {
       sourceType: "561",
       channel: "coin",
+      afSmartRedirect: "y",
     },
     {
       sourceType: "680",
       channel: "coin",
+      afSmartRedirect: "y",
     },
     {
       sourceType: "591",
       channel: "coin",
+      afSmartRedirect: "y",
     },
     // { sourceType: "570", channel: "coin", afSmartRedirect: "y" },
   ];
