@@ -28,7 +28,7 @@ export function cleanAliUrlFromAff(url) {
 
 export function defineSourceTypeParamFromFullLink(fullLink) {
   const url = new URL(fullLink);
-
+  console.log("fullLink", fullLink);
   // Перевіряємо, чи це редірект на star.aliexpress.com
   const redirectParam = url.searchParams.get("redirectUrl");
 
@@ -36,11 +36,14 @@ export function defineSourceTypeParamFromFullLink(fullLink) {
 
   if (redirectParam) {
     // Якщо є redirectUrl — працюємо з ним
-    targetUrl = redirectParam;
+    const restOfParams = fullLink.split("redirectUrl=")[1];
+    targetUrl = decodeURIComponent(restOfParams);
+    // targetUrl = redirectParam;
   }
 
   // Тепер парсимо справжній URL, щоб витягнути параметри
   const parsedTargetUrl = new URL(targetUrl);
+  console.log("parsedTargetUrl", parsedTargetUrl);
   const sourceType = parsedTargetUrl.searchParams.get("sourceType");
   return sourceType;
 }

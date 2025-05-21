@@ -48,6 +48,9 @@ export function getAliExpressPromoLinks(url) {
       const urlCopy = new URL(baseUrl); // створюємо копію базового URL
       urlCopy.searchParams.set("sourceType", sourceType);
       urlCopy.searchParams.set("channel", channel);
+      // urlCopy.searchParams.set("srcSns", "sns_Copy");
+      // urlCopy.searchParams.set("spreadType", "socialShare");
+      // urlCopy.searchParams.set("bizType", "ProductDetail");
       // urlCopy.searchParams.set("afSmartRedirect", afSmartRedirect);
       // urlCopy.searchParams.set("gatewayAdapt", gatewayAdapt);
       const cleanUrl = urlCopy.toString();

@@ -8,10 +8,12 @@ export function getSuccessMessage(promotionLinks) {
     562: { label: 'З купоном "Земля призів"', emoji: "🌱", order: 4 },
     591: { label: "Пропозиція для комплектів", emoji: "🛍", order: 5 },
   };
-
+  console.log("promotionLinks", promotionLinks);
   const promoText = promotionLinks
     .map(({ promotion_link, source_value }) => {
+      console.log("source_value", source_value);
       const sourceType = defineSourceTypeParamFromFullLink(source_value);
+      console.log("sourceType", sourceType);
       const typeData = dataByType[sourceType];
 
       if (!typeData) return null;
