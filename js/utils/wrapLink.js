@@ -17,7 +17,7 @@ function decodeQueryParams(url) {
 }
 export function wrapWithRedirectLink(originalUrl) {
   // const decodedUrl = decodeQueryParams(originalUrl);
-  const mobBaseUrl = toMobileAliExpressLink(originalUrl);
-  const encodedRedirectUrl = encodeURIComponent(mobBaseUrl);
+  // const mobBaseUrl = toMobileAliExpressLink(originalUrl);
+  const encodedRedirectUrl = encodeURIComponent(originalUrl);
   return `https://star.aliexpress.com/share/share.htm?redirectUrl=${encodedRedirectUrl}`;
 }

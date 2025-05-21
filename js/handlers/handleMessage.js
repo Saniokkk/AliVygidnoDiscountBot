@@ -32,6 +32,7 @@ export const handleMessage = async (msg, bot) => {
   }
 
   const url = extractUrl(text);
+  console.log("url", url);
   if (!url) {
     return bot.sendMessage(
       chatId,
@@ -51,10 +52,12 @@ export const handleMessage = async (msg, bot) => {
   bot.sendChatAction(chatId, "typing");
 
   let productUrl = url;
+  console.log("1productUrl: ", productUrl);
 
   if (typeUrl === "short") {
     try {
       productUrl = await getOriginalUrlFromShort(url);
+      console.log("2productUrl: ", productUrl);
     } catch (error) {
       console.error("Помилка при розшифруванні короткого посилання:", error);
       return bot.sendMessage(

@@ -8,12 +8,16 @@ export function getSuccessMessage(promotionLinks) {
     562: { label: 'З купоном "Земля призів"', emoji: "🌱", order: 4 },
     591: { label: "Пропозиція для комплектів", emoji: "🛍", order: 5 },
   };
+
+  const quoteBlock = `
+<i>⚠️Для отримання максимальної монетної знижки — додайте товар у кошик або в обране,
+потім придбайте тут: <a href="https://s.click.aliexpress.com/e/_oDWMStG"><b>придбайте тут</b></a></i>
+  `.trim();
+
   console.log("promotionLinks", promotionLinks);
   const promoText = promotionLinks
     .map(({ promotion_link, source_value }) => {
-      console.log("source_value", source_value);
       const sourceType = defineSourceTypeParamFromFullLink(source_value);
-      console.log("sourceType", sourceType);
       const typeData = dataByType[sourceType];
 
       if (!typeData) return null;
@@ -25,11 +29,26 @@ export function getSuccessMessage(promotionLinks) {
     })
     .filter(Boolean) // видаляємо null якщо sourceType не знайдено
     .sort((a, b) => a.order - b.order)
-    .map(
-      ({ emoji, label, promotion_link }) =>
-        `${emoji} <a href="${promotion_link}">${label}</a>`
-    )
+    .map(({ emoji, label, promotion_link, order }) => {
+      let text = `${emoji} <a href="${promotion_link}">${label}</a>`;
+      if (order === 1) {
+        text += `\n\n${quoteBlock}`;
+      }
+      return text;
+    })
     .join("\n\n");
+
+  // const quoteBlock = `⚠️ <b>При меншій монетній знижці</b> — додайте товар у кошик або в обране, потім придбайте тут:\nhttps://s.click.aliexpress.com/e/_oE8JGL0`;
+
+  //   const quoteBlock = `<pre>
+  // ⚠️При меншій монетній знижці —
+  // додайте товар у кошик або в обране,
+  // потім придбайте тут:
+  // https://s.click.aliexpress.com/e/_oE8JGL0
+  // </pre>`;
+
+  // const quoteBlock = `>> ⚠️При меншій монетній знижці — додайте товар у кошик або в обране,\n>> потім придбайте тут:\n>> https://s.click.aliexpress.com/e/_oE8JGL0`;
+
   console.log("!!!!!!promoText", promoText);
-  return "\n\n" + "Ваш товар в різних розділах:" + "\n\n" + promoText + "\n\n";
+  return `<b>Ваш товар в різних розділах:</b> \n\n ${promoText}`;
 }

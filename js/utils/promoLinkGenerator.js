@@ -3,8 +3,8 @@ import { wrapWithRedirectLink, toMobileAliExpressLink } from "./index.js";
 export function getAliExpressPromoLinks(url) {
   console.log();
   const baseUrl = new URL(url);
-  baseUrl.search = ""; // очищаємо всі параметри
   console.log("baseUrl", baseUrl.toString());
+  baseUrl.search = ""; // очищаємо всі параметри
   // const mobBaseUrl = toMobileAliExpressLink(baseUrl);
   const channelsParams = [
     {
@@ -32,7 +32,6 @@ export function getAliExpressPromoLinks(url) {
       channel: "coin",
       afSmartRedirect: "y",
     },
-    // { sourceType: "570", channel: "coin", afSmartRedirect: "y" },
   ];
 
   // 620 монеты
@@ -48,10 +47,6 @@ export function getAliExpressPromoLinks(url) {
       const urlCopy = new URL(baseUrl); // створюємо копію базового URL
       urlCopy.searchParams.set("sourceType", sourceType);
       urlCopy.searchParams.set("channel", channel);
-      // urlCopy.searchParams.set("srcSns", "sns_Copy");
-      // urlCopy.searchParams.set("spreadType", "socialShare");
-      // urlCopy.searchParams.set("bizType", "ProductDetail");
-      // urlCopy.searchParams.set("afSmartRedirect", afSmartRedirect);
       // urlCopy.searchParams.set("gatewayAdapt", gatewayAdapt);
       const cleanUrl = urlCopy.toString();
       // const redirectedUrl = wrapWithRedirectLink(cleanUrl); // тут обгортка
