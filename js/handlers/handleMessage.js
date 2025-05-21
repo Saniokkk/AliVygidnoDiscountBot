@@ -89,23 +89,23 @@ export const handleMessage = async (msg, bot) => {
     console.log("answer: ", answer);
 
     return bot.sendMessage(chatId, answer, {
-      ...HTMLOptions,
       reply_markup: {
         inline_keyboard: [
           [
             {
-              text: "📢 Підписатися на канал",
+              text: "🔔 Підписатися на канал 🚀",
               url: "https://t.me/ali_vygidno", // <-- сюди встав свій URL
             },
           ],
           [
             {
-              text: "💬 Питання та пропозицій",
+              text: "👉 Питання та пропозицій 💬",
               url: "https://t.me/ali_vygidno",
             },
           ],
         ],
       },
+      ...HTMLOptions,
     });
   } catch (error) {
     console.error("Помилка при отриманні реферальних лінків:", error);
