@@ -63,11 +63,12 @@ export function generateCoinDiscountLink(productId) {
 export function toMobileAliExpressLink(desktopUrl) {
   try {
     const url = new URL(desktopUrl);
+    console.log("URLtoMobileAliExpressLink: ", url);
 
     // Проверка, что это ссылка на товар
     if (
-      !url.hostname.includes("aliexpress.com") ||
-      !url.pathname.startsWith("/item/")
+      !url.hostname.includes("aliexpress.com")
+      // || !url.pathname.startsWith("/item/")
     ) {
       throw new Error("Это не ссылка на товар AliExpress");
     }

@@ -90,6 +90,7 @@ export const handleMessage = async (msg, bot) => {
     console.log("successResult", successResult);
     if (!successResult) {
       const linksWithRedirect = linksWithTypeChannel.map(wrapWithRedirectLink);
+      console.log("linksWithRedirect: ", linksWithRedirect);
       data = await aliexpressApiService.getAffiliateLinks(linksWithRedirect);
     }
 
