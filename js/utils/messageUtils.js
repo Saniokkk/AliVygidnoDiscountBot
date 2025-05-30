@@ -2,17 +2,22 @@ import { defineSourceTypeParamFromFullLink } from "../utils/index.js";
 
 export function getSuccessMessage(promotionLinks) {
   const dataByType = {
-    620: { label: "З монетними знижками", emoji: "💰", order: 1 },
+    1: {
+      label: "Розділ монет з вашим товаром\n 👉🏻 (максимальна знижка)",
+      emoji: "💰",
+      order: 1,
+    },
+    620: { label: "Посилання на товар", emoji: "✅", order: 1 },
     561: { label: "З суперзнижкою", emoji: "🔥", order: 2 },
     680: { label: "Big save (велика економія)", emoji: "💯", order: 3 },
     562: { label: 'З купоном "Земля призів"', emoji: "🌱", order: 4 },
     591: { label: "Пропозиція для комплектів", emoji: "🛍", order: 5 },
   };
 
-  const quoteBlock = `
-<i>⚠️Для отримання максимальної монетної знижки — додайте товар у кошик або в обране,
-потім придбайте тут: <a href="https://s.click.aliexpress.com/e/_oDWMStG"><b>придбайте тут</b></a></i>
-  `.trim();
+  //   const quoteBlock = `
+  // <i>⚠️Для отримання максимальної монетної знижки — додайте товар у кошик або в обране,
+  // потім придбайте тут: <a href="https://s.click.aliexpress.com/e/_oDWMStG"><b>придбайте тут</b></a></i>
+  //   `.trim();
 
   console.log("promotionLinks", promotionLinks);
   const promoText = promotionLinks
@@ -31,9 +36,9 @@ export function getSuccessMessage(promotionLinks) {
     .sort((a, b) => a.order - b.order)
     .map(({ emoji, label, promotion_link, order }) => {
       let text = `${emoji} <a href="${promotion_link}">${label}</a>`;
-      if (order === 1) {
-        text += `\n\n${quoteBlock}`;
-      }
+      // if (order === 1) {
+      //   text += `\n\n${quoteBlock}`;
+      // }
       return text;
     })
     .join("\n\n");

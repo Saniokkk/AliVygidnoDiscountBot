@@ -1,7 +1,6 @@
 import { wrapWithRedirectLink, toMobileAliExpressLink } from "./index.js";
 
 export function getAliExpressPromoLinks(url) {
-  console.log();
   const baseUrl = new URL(url);
   console.log("baseUrl", baseUrl.toString());
   baseUrl.search = ""; // очищаємо всі параметри
@@ -43,11 +42,10 @@ export function getAliExpressPromoLinks(url) {
 
   // Генеруємо 4 версії посилання
   const links = channelsParams.map(
-    ({ sourceType, channel, afSmartRedirect, gatewayAdapt }) => {
+    ({ sourceType, channel, afSmartRedirect }) => {
       const urlCopy = new URL(baseUrl); // створюємо копію базового URL
       urlCopy.searchParams.set("sourceType", sourceType);
       urlCopy.searchParams.set("channel", channel);
-      // urlCopy.searchParams.set("gatewayAdapt", gatewayAdapt);
       const cleanUrl = urlCopy.toString();
       // const redirectedUrl = wrapWithRedirectLink(cleanUrl); // тут обгортка
       return cleanUrl;

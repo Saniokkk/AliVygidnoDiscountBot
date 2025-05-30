@@ -14,6 +14,11 @@ export function extractUrl(text) {
   return matches ? matches[0] : null;
 }
 
+export function extractAliExpressProductsId(url) {
+  const match = url.match(/\/item\/(\d+)\.html/);
+  return match ? match[1] : null;
+}
+
 /**
  * Очишення посилань від квері параметрів
  * @param {string} url - зпарсений url з повідомлення від користувача
@@ -38,14 +43,21 @@ export function defineSourceTypeParamFromFullLink(fullLink) {
     // Якщо є redirectUrl — працюємо з ним
     const restOfParams = fullLink.split("redirectUrl=")[1];
     targetUrl = decodeURIComponent(restOfParams);
-    // targetUrl = redirectParam;
   }
 
   // Тепер парсимо справжній URL, щоб витягнути параметри
   const parsedTargetUrl = new URL(targetUrl);
   console.log("parsedTargetUrl", parsedTargetUrl);
   const sourceType = parsedTargetUrl.searchParams.get("sourceType");
+  if (!sourceType) {
+    const immersiveMode = parsedTargetUrl.searchParams.get("_immersiveMode");
+    return immersiveMode ? 1 : null;
+  }
   return sourceType;
+}
+
+export function generateCoinDiscountLink(productId) {
+  return `https://m.aliexpress.com/p/coin-index/index.html?_immersiveMode=true&from=syicon&productIds=${productId}`;
 }
 
 export function toMobileAliExpressLink(desktopUrl) {
