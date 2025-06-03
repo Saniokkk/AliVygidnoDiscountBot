@@ -44,7 +44,7 @@ export function defineSourceTypeParamFromFullLink(fullLink) {
     const restOfParams = fullLink.split("redirectUrl=")[1];
     targetUrl = decodeURIComponent(restOfParams);
   }
-
+  console.log("TTTTTTTtargetUrl", targetUrl);
   // Тепер парсимо справжній URL, щоб витягнути параметри
   const parsedTargetUrl = new URL(targetUrl);
   console.log("parsedTargetUrl", parsedTargetUrl);

@@ -27,7 +27,7 @@ export function getAliExpressPromoLinks(url) {
       afSmartRedirect: "y",
     },
     {
-      sourceType: "591",
+      sourceType: "570",
       channel: "coin",
       afSmartRedirect: "y",
     },
