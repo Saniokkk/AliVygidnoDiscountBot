@@ -7,6 +7,7 @@ import {
   wrapWithRedirectLink,
   extractAliExpressProductsId,
   generateCoinDiscountLink,
+  generatePlayAndWinLink,
 } from "../utils/index.js";
 import aliexpressApiService from "../services/aliAPI.js";
 
@@ -72,10 +73,14 @@ export const handleMessage = async (msg, bot) => {
   const productId = extractAliExpressProductsId(productUrl);
 
   const productLinkToCoinsChannel = generateCoinDiscountLink(productId);
+  const productLinkToPlayAndWinChannel = generatePlayAndWinLink(productId);
 
   try {
     const linksWithTypeChannel = getAliExpressPromoLinks(productUrl);
-    linksWithTypeChannel.push(productLinkToCoinsChannel);
+    linksWithTypeChannel.push(
+      productLinkToCoinsChannel,
+      productLinkToPlayAndWinChannel
+    );
 
     console.log("linksWithTypeChannel: ", linksWithTypeChannel);
 

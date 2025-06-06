@@ -50,14 +50,25 @@ export function defineSourceTypeParamFromFullLink(fullLink) {
   console.log("parsedTargetUrl", parsedTargetUrl);
   const sourceType = parsedTargetUrl.searchParams.get("sourceType");
   if (!sourceType) {
-    const immersiveMode = parsedTargetUrl.searchParams.get("_immersiveMode");
-    return immersiveMode ? 1 : null;
+    const fromSyicon = parsedTargetUrl.searchParams.get("from") === "syicon";
+
+    if (!fromSyicon) {
+      const setspmb =
+        parsedTargetUrl.searchParams.get("setspmb") === "game_center_p4p_feeds";
+      return setspmb ? 2 : null;
+    }
+    return 1;
   }
+
   return sourceType;
 }
 
 export function generateCoinDiscountLink(productId) {
   return `https://m.aliexpress.com/p/coin-index/index.html?_immersiveMode=true&from=syicon&productIds=${productId}`;
+}
+
+export function generatePlayAndWinLink(productId) {
+  return `https://m.aliexpress.com/p/aep4p_interactive_promotion/custom-feeds.html?_immersiveMode=true&channel=coin&scenario=tpp_browse_mixedrecommend_gamecenter_adpriority&setspmb=game_center_p4p_feeds&productIds=${productId}`;
 }
 
 export function toMobileAliExpressLink(desktopUrl) {
