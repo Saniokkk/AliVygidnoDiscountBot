@@ -13,12 +13,12 @@ export function getSuccessMessage(promotionLinks) {
     680: { label: "Big save (велика економія)", emoji: "💯", order: 4 },
     591: { label: 'З купоном "Земля призів"', emoji: "🌱", order: 5 },
     570: { label: "Пропозиція для комплектів", emoji: "🛍", order: 6 },
-    2: {
-      label:
-        "Грай і заробляй\n\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0👉🏻 (роби покупки - отримуй кристали)",
-      emoji: "💎",
-      order: 7,
-    },
+    // 2: {
+    //   label:
+    //     "Грай і заробляй\n\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0👉🏻 (роби покупки - отримуй кристали)",
+    //   emoji: "💎",
+    //   order: 7,
+    // },
   };
 
   //   const quoteBlock = `

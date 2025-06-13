@@ -56,6 +56,8 @@ export function defineSourceTypeParamFromFullLink(fullLink) {
       const setspmb =
         parsedTargetUrl.searchParams.get("setspmb") === "game_center_p4p_feeds";
       return setspmb ? 2 : null;
+      // const from = parsedTargetUrl.searchParams.get("from") === "myae_icon_UA";
+      // return from ? 2 : null;
     }
     return 1;
   }
@@ -70,6 +72,9 @@ export function generateCoinDiscountLink(productId) {
 export function generatePlayAndWinLink(productId) {
   return `https://m.aliexpress.com/p/aep4p_interactive_promotion/custom-feeds.html?_immersiveMode=true&channel=coin&scenario=tpp_browse_mixedrecommend_gamecenter_adpriority&setspmb=game_center_p4p_feeds&productIds=${productId}`;
 }
+// export function generatePlayAndWinLink(productId) {
+//   return ` https://m.aliexpress.com/p/ae-gamecenter/index.html?_immersiveMode=true&from=myae_icon_UA&statusBarHeight=59&_currency=UAH&_lang=uk_UA&fromApp=true&productIds=${productId}`;
+// }
 
 export function toMobileAliExpressLink(desktopUrl) {
   try {

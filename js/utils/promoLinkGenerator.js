@@ -47,8 +47,8 @@ export function getAliExpressPromoLinks(url) {
       urlCopy.searchParams.set("sourceType", sourceType);
       urlCopy.searchParams.set("channel", channel);
       const cleanUrl = urlCopy.toString();
-      // const redirectedUrl = wrapWithRedirectLink(cleanUrl); // тут обгортка
-      return cleanUrl;
+      const redirectedUrl = wrapWithRedirectLink(cleanUrl); // тут обгортка
+      return redirectedUrl;
     }
   );
 
